@@ -1,5 +1,9 @@
 module Main where
 
+import JSON.JSON
 
 main :: IO ()
-main = putStrLn "hello"
+main = do
+  name <- getLine
+  json <- getJSONFromFile name
+  print json

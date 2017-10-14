@@ -51,3 +51,9 @@ jsonValue = lexme (parseNull
         <|> fmap JObject parseObject
         <|> parseNumbers -- throws exception for no parse on invalid json
         <?> "invalid json found")
+
+getJSONFromFile :: String -> IO (Either ParseError JSONValue)
+getJSONFromFile file = do
+  text <- readFile file
+  print "starting parse"
+  return (parse jsonValue file text)
