@@ -1,5 +1,6 @@
 module JSON.Parser.Parser(
   bool,
+  ws,
   lexme,
   matchNull,
   strings,
@@ -13,7 +14,7 @@ ws :: Parser String
 ws = many (oneOf " \t\n")
 
 lexme :: Parser a -> Parser a
-lexme p = ws *> p
+lexme p = ws *> p <* ws
 
 -- | null parser
 matchNull :: Parser String

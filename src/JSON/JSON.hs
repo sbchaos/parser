@@ -14,34 +14,40 @@ data JSONValue = JNumber Double
 
 
 parseNumbers :: Parser JSONValue
-parseNumbers = fmap JNumber numbers
+parseNumbers = fmap JNumber (lexme numbers)
 
 parseNull :: Parser JSONValue
-parseNull = matchNull *> pure JNull
+parseNull = lexme matchNull *> pure JNull
 
 parseBool :: Parser JSONValue
-parseBool = fmap JBool bool
+parseBool = fmap JBool (lexme bool)
 
 parseStrings :: Parser JSONValue
-parseStrings = fmap JString strings
+parseStrings = fmap JString (lexme strings)
 
 parseArray :: Parser [JSONValue]
-parseArray = char '[' *> (jsonValue `sepBy` char ',') <* char ']'
+parseArray = do
+  ws
+  arr <- char '[' *> (jsonValue `sepBy` char ',') <* char ']'
+  ws
+  return arr
 
 objectEntry = do
+  ws
   key <- strings
   char ':'
   value <- jsonValue
+  ws
   return (key, value)
 
 parseObject :: Parser [(String, JSONValue)]
 parseObject = char '{' *> (objectEntry `sepBy` char ',') <* char '}'
 
 jsonValue :: Parser JSONValue
-jsonValue = parseNull
+jsonValue = lexme (parseNull
         <|> parseBool
         <|> parseStrings
         <|> fmap JArray parseArray
         <|> fmap JObject parseObject
         <|> parseNumbers -- throws exception for no parse on invalid json
-        <?> "invalid json found"
+        <?> "invalid json found")

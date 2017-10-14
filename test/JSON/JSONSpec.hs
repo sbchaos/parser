@@ -32,3 +32,6 @@ spec =
 
       it "parses nested json structure" $
         parse jsonValue "test" "{\"name\":\"json\",\"age\":24,\"old\":true}" `shouldBe` Right (JObject [("name", JString "json"), ("age", JNumber 24), ("old", JBool True)])
+
+      it "parses proper json" $
+        parse jsonValue "test" "{\"name\": \"json\"}" `shouldBe` Right (JObject [("name", JString "json")])
