@@ -1,4 +1,10 @@
-module JSON.Parser.Parser where
+module JSON.Parser.Parser(
+  bool,
+  lexme,
+  matchNull,
+  strings,
+  numbers
+) where
 
 import Text.ParserCombinators.Parsec
 
@@ -10,8 +16,8 @@ lexme :: Parser a -> Parser a
 lexme p = ws *> p
 
 -- | null parser
-parseNull :: Parser String
-parseNull = string "null"
+matchNull :: Parser String
+matchNull = string "null"
 
 -- | The boolean parser
 matchTrue :: Parser Bool
@@ -31,7 +37,7 @@ strings = char '"' *> many (noneOf ['"']) <* char '"'
 
 
 -- | The number parser
-numbers :: Parser Float
+numbers :: Parser Double
 numbers = do
     digits <- many (digit <|> oneOf ".-")
     return (read digits)

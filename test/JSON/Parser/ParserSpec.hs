@@ -17,18 +17,6 @@ spec :: Spec
 spec =
   describe "Parser" $ do
 
-    describe "matchTrue" $ do
-      it "matches the string true" $
-        parse matchTrue "test" "true" `shouldBe` Right True
-      it "errors whin string is not true" $
-        isLeft (parse matchTrue "test" "blue") `shouldBe` True
-
-    describe "mathFalse" $ do
-      it "matches the string false" $
-        parse matchFalse "test" "false" `shouldBe` Right False
-      it "errors whin string is not true" $
-        isLeft (parse matchFalse "test" "blue") `shouldBe` True
-
     describe "bool" $ do
       it "matches true" $
         parse bool "test" "true\t" `shouldBe` Right True
@@ -37,7 +25,7 @@ spec =
 
     describe "lexme combinator" $
       it "removes leading and trailing whitespace" $
-        parse (lexme matchTrue) "test" "\t  true \n" `shouldBe` Right True
+        parse (lexme bool) "test" "\t  true \n" `shouldBe` Right True
 
     describe "strings" $ do
       it "extrcts string from text" $
@@ -53,4 +41,4 @@ spec =
 
     describe "parseNull" $
       it "matches null value" $
-        parse parseNull "test" "null" `shouldBe` Right "null"
+        parse matchNull "test" "null" `shouldBe` Right "null"
