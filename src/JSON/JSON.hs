@@ -1,6 +1,7 @@
 module JSON.JSON where
 
 import JSON.Parser.Parser
+import JSON.Parser.Number
 
 import Text.ParserCombinators.Parsec
 
@@ -14,7 +15,7 @@ data JSONValue = JNumber Double
 
 
 parseNumbers :: Parser JSONValue
-parseNumbers = fmap JNumber (lexme numbers)
+parseNumbers = fmap JNumber (lexme number)
 
 parseNull :: Parser JSONValue
 parseNull = lexme matchNull *> pure JNull

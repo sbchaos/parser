@@ -37,7 +37,7 @@ strings :: Parser String
 strings = char '"' *> many (noneOf ['"']) <* char '"'
 
 
--- | The number parser
+-- | The number parser - old way throws errors
 numbers :: Parser Double
 numbers = do
     digits <- many (digit <|> oneOf ".-")
